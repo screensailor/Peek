@@ -1,21 +1,19 @@
-import Foundation
-
 public typealias Peekable = CustomDebugStringConvertible
-
-extension Peekable where Self: RawRepresentable {
-    public var debugDescription: String { "\(Self.self).\(rawValue)" }
-}
-
-extension Peekable where Self: CustomStringConvertible {
-    public var debugDescription: String { description }
-}
 
 extension Bool: Peekable {}
 extension IntegerLiteralType: Peekable {}
-extension CGFloat: Peekable {}
+
+extension Peekable where Self: RawRepresentable {
+    @inlinable public var debugDescription: String { "\(Self.self).\(rawValue)" }
+}
+
+extension Peekable where Self: CustomStringConvertible {
+    @inlinable public var debugDescription: String { description }
+}
 
 extension Peekable {
     
+    @inlinable
     @discardableResult
     public func peek(
         function: String = #function,
@@ -28,6 +26,7 @@ extension Peekable {
         return self
     }
     
+    @inlinable
     @discardableResult
     public func peek<Message>(
         _ message: @autoclosure () -> Message,
@@ -36,11 +35,12 @@ extension Peekable {
         line: Int = #line
     ) -> Self {
         #if DEBUG
-        print("\(message())", self, here(function, file, line))
+        print("\(message()):", self, here(function, file, line))
         #endif
         return self
     }
     
+    @inlinable
     @discardableResult
     public func poke<Property>(
         _ keyPath: KeyPath<Self, Property>,
@@ -54,6 +54,7 @@ extension Peekable {
         return self
     }
     
+    @inlinable
     @discardableResult
     public func poke<Message, Property>(
         _ message: @autoclosure () -> Message,
@@ -69,17 +70,12 @@ extension Peekable {
     }
 }
 
+@inlinable
 public func here(
     _ function: String = #function,
     _ file: String = #file,
     _ line: Int = #line,
     at: String = "→"
 ) -> String {
-    "\(at) \(function) \(file.name) \(line)"
-}
-
-private extension String {
-    var name: String {
-        split(separator: "/").last?.description ?? ""
-    }
+    "\(at) \(function) \(file.split(separator: "/").last?.description ?? "") \(line)"
 }
