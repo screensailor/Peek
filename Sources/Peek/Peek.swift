@@ -35,7 +35,7 @@ extension Peekable {
         line: Int = #line
     ) -> Self {
         #if DEBUG
-        print("\(message()):", self, here(function, file, line))
+        print("\(message())", self, here(function, file, line))
         #endif
         return self
     }
