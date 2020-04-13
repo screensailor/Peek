@@ -1,7 +1,10 @@
+import Foundation
+
 public typealias Peekable = CustomDebugStringConvertible
 
 extension Bool: Peekable {}
 extension IntegerLiteralType: Peekable {}
+extension CGFloat: Peekable {}
 
 extension Peekable where Self: RawRepresentable {
     @inlinable public var debugDescription: String { "\(Self.self).\(rawValue)" }
