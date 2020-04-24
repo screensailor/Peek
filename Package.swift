@@ -14,7 +14,6 @@ let package = Package(
         .library(name: "Peek", targets: ["Peek"])
     ],
     targets: [
-        .target(name: "Peek", dependencies: []),
-        .testTarget(name: "PeekTests", dependencies: ["Peek"])
+        .target(name: "Peek"),
     ]
 )

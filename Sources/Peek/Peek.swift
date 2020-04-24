@@ -1,27 +1,11 @@
-import CoreGraphics
-
-public typealias Peekable = CustomDebugStringConvertible
-
-extension Bool: Peekable {}
-extension IntegerLiteralType: Peekable {}
-extension CGFloat: Peekable {}
-
-extension Peekable where Self: RawRepresentable {
-    @inlinable public var debugDescription: String { "\(Self.self).\(rawValue)" }
-}
-
-extension Peekable where Self: CustomStringConvertible {
-    @inlinable public var debugDescription: String { description }
-}
-
-extension Peekable {
+extension CustomDebugStringConvertible {
     
     @inlinable
     @discardableResult
     public func peek(
-        function: String = #function,
-        file: String = #file,
-        line: Int = #line
+        _ function: StaticString = #function,
+        _ file: StaticString = #file,
+        _ line: Int = #line
     ) -> Self {
         #if DEBUG
         print(self, here(function, file, line))
@@ -33,9 +17,9 @@ extension Peekable {
     @discardableResult
     public func peek<Message>(
         _ message: @autoclosure () -> Message,
-        function: String = #function,
-        file: String = #file,
-        line: Int = #line
+        _ function: StaticString = #function,
+        _ file: StaticString = #file,
+        _ line: Int = #line
     ) -> Self {
         #if DEBUG
         print("\(message())", self, here(function, file, line))
@@ -47,9 +31,9 @@ extension Peekable {
     @discardableResult
     public func poke<Property>(
         _ keyPath: KeyPath<Self, Property>,
-        function: String = #function,
-        file: String = #file,
-        line: Int = #line
+        _ function: StaticString = #function,
+        _ file: StaticString = #file,
+        _ line: Int = #line
     ) -> Self {
         #if DEBUG
         print(self[keyPath: keyPath], here(function, file, line))
@@ -62,9 +46,9 @@ extension Peekable {
     public func poke<Message, Property>(
         _ message: @autoclosure () -> Message,
         _ keyPath: KeyPath<Self, Property>,
-        function: String = #function,
-        file: String = #file,
-        line: Int = #line
+        _ function: StaticString = #function,
+        _ file: StaticString = #file,
+        _ line: Int = #line
     ) -> Self {
         #if DEBUG
         print("\(message())", self[keyPath: keyPath], here(function, file, line))
@@ -75,10 +59,15 @@ extension Peekable {
 
 @inlinable
 public func here(
-    _ function: String = #function,
-    _ file: String = #file,
+    _ function: StaticString = #function,
+    _ file: StaticString = #file,
     _ line: Int = #line,
-    at: String = "→"
+    prefix: String = "→ "
 ) -> String {
-    "\(at) \(function) \(file.split(separator: "/").last?.description ?? "") \(line)"
+    var file = file.description
+    if let i = file.lastIndex(of: "/") {
+        file = file.suffix(from: i).description
+    }
+    return "\(prefix)\(function) \(file) \(line)"
 }
+
