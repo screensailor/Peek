@@ -31,8 +31,11 @@ public struct Peek<A> {
         self.line = line
     }
 
-    public func log(_ a: A) -> A {
+    @discardableResult
+    @inlinable public func log(_ a: A) -> A {
+        #if DEBUG
         print(message(), a[keyPath: keyPath], here(function, file, line))
+        #endif
         return a
     }
 }
