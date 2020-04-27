@@ -3,12 +3,30 @@ extension CustomDebugStringConvertible {
     @inlinable
     @discardableResult
     public func peek(
-        _ function: StaticString = #function,
-        _ file: StaticString = #file,
-        _ line: Int = #line
+        function: String = #function,
+        file: String = #file,
+        line: Int = #line,
+        to log: ((Peek) -> ())? = nil
     ) -> Self {
+        log?(Peek(self, \.self, nil, function, file, line))
         #if DEBUG
-        print(self, here(function, file, line))
+        print(Peek(self, \.self, nil, function, file, line))
+        #endif
+        return self
+    }
+    
+    @inlinable
+    @discardableResult
+    public func peek<Property>(
+        _ keyPath: KeyPath<Self, Property>,
+        function: String = #function,
+        file: String = #file,
+        line: Int = #line,
+        to log: ((Peek) -> ())? = nil
+    ) -> Self {
+        log?(Peek(self, keyPath, nil, function, file, line))
+        #if DEBUG
+        print(Peek(self, keyPath, nil, function, file, line))
         #endif
         return self
     }
@@ -17,41 +35,31 @@ extension CustomDebugStringConvertible {
     @discardableResult
     public func peek<Message>(
         _ message: @autoclosure () -> Message,
-        _ function: StaticString = #function,
-        _ file: StaticString = #file,
-        _ line: Int = #line
+        function: String = #function,
+        file: String = #file,
+        line: Int = #line,
+        to log: ((Peek) -> ())? = nil
     ) -> Self {
+        log?(Peek(self, \.self, message(), function, file, line))
         #if DEBUG
-        print("\(message())", self, here(function, file, line))
+        print(Peek(self, \.self, message(), function, file, line))
         #endif
         return self
     }
     
     @inlinable
     @discardableResult
-    public func poke<Property>(
-        _ keyPath: KeyPath<Self, Property>,
-        _ function: StaticString = #function,
-        _ file: StaticString = #file,
-        _ line: Int = #line
-    ) -> Self {
-        #if DEBUG
-        print(self[keyPath: keyPath], here(function, file, line))
-        #endif
-        return self
-    }
-    
-    @inlinable
-    @discardableResult
-    public func poke<Message, Property>(
+    public func peek<Message, Property>(
         _ message: @autoclosure () -> Message,
         _ keyPath: KeyPath<Self, Property>,
-        _ function: StaticString = #function,
-        _ file: StaticString = #file,
-        _ line: Int = #line
+        function: String = #function,
+        file: String = #file,
+        line: Int = #line,
+        to log: ((Peek) -> ())? = nil
     ) -> Self {
+        log?(Peek(self, keyPath, message(), function, file, line))
         #if DEBUG
-        print("\(message())", self[keyPath: keyPath], here(function, file, line))
+        print(Peek(self, keyPath, message(), function, file, line))
         #endif
         return self
     }
