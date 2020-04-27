@@ -1,6 +1,6 @@
 public typealias here = CodeLocation
 
-@discardableResult public func >> <T>(l: T, r: here) -> T {
+@discardableResult public func ... <T>(l: T, r: here) -> T {
     #if DEBUG
     print(l, r)
     #endif

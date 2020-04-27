@@ -8,10 +8,10 @@ class PeekTests: XCTestCase {
         5.peek("✅")
         peek(\.className)
         peek("✅", \.className){ print("❗️log", $0.log()) }
-        5 >> "✅"
-        5 >> "✅".here()
+        2 + 3 ... "✅"
+        2 + 3 ... "✅".here()
         print( "⚠️".error() )
-        5 >> here()
+        2 + 3 ... here()
     }
 }
 

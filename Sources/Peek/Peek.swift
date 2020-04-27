@@ -1,6 +1,6 @@
 import Foundation
 
-@discardableResult public func >> <L>(l: L, r: Any) -> L {
+@discardableResult public func ... <L>(l: L, r: Any) -> L {
     #if DEBUG
     print(l, r)
     #endif
