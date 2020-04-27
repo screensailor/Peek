@@ -23,9 +23,9 @@ public struct Peek {
     ) {
         self.date = Date()
         self.location = here(function, file, line)
-        self.log = { [location, date] in
+        self.log = { [location] in
             var o = ""
-            print(message ?? "•", a[keyPath: keyPath], location, Peek.format(date), terminator: "", to: &o)
+            print(message ?? "•", a[keyPath: keyPath], location, terminator: "", to: &o)
             return o
         }
     }
