@@ -2,7 +2,7 @@ import Foundation
 
 @discardableResult public func ... <L>(l: L, r: Any) -> L {
     #if DEBUG
-    print(l, r)
+    print(r, l)
     #endif
     return l
 }
@@ -31,7 +31,7 @@ public struct Peek {
     }
     
     public static let format: (Date) -> String = {
-        if #available(OSX 10.13, *) {
+        if #available(OSX 10.13, iOS 11.0, *) {
             let f = ISO8601DateFormatter()
             f.formatOptions.formUnion([
                 .withFractionalSeconds,
