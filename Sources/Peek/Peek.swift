@@ -1,6 +1,9 @@
 import Foundation
 
-@discardableResult public func ... <L>(l: L, r: Any) -> L {
+infix operator ¶ : TernaryPrecedence
+
+@discardableResult
+public func ¶ <L, R>(l: L, r: R) -> L {
     #if DEBUG
     print(r, l)
     #endif
@@ -29,19 +32,6 @@ public struct Peek {
             return o
         }
     }
-    
-    public static let format: (Date) -> String = {
-        if #available(OSX 10.13, iOS 11.0, *) {
-            let f = ISO8601DateFormatter()
-            f.formatOptions.formUnion([
-                .withFractionalSeconds,
-                .withSpaceBetweenDateAndTime
-            ])
-            return { f.string(from: $0) }
-        } else {
-            return { $0.description }
-        }
-    }()
 }
 
 extension Peek: CustomStringConvertible, CustomDebugStringConvertible {
