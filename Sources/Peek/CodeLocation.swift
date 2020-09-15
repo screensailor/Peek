@@ -26,7 +26,7 @@ extension CodeLocation: CustomDebugStringConvertible, CustomStringConvertible {
     
     public var description: String {
         var file = self.file
-        if let i = file.lastIndex(of: "/") {
+        if let i = file.lastIndex(of: "/") { // TODO: remove when https://forums.swift.org/t/concise-magic-file-names/31297
             file = file.suffix(from: i).description
         }
         return "\(function) \(file) \(line)"
