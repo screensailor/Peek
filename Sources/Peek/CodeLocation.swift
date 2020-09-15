@@ -1,12 +1,5 @@
 public typealias here = CodeLocation
 
-@discardableResult public func ... <T>(l: T, r: here) -> T {
-    #if DEBUG
-    print(l, r)
-    #endif
-    return l
-}
-
 public struct CodeLocation: Codable, Hashable {
     public var function: String
     public var file: String
