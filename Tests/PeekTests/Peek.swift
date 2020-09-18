@@ -1,5 +1,6 @@
-import Hope
 @testable import Peek
+import Hope
+import os
 
 class Peek™: Hopes {
     
@@ -12,6 +13,11 @@ class Peek™: Hopes {
         2 + 3 ¶ "✅".here()
         print( "⚠️".error() )
         2 + 3 ¶ here()
+    }
+    
+    func test() {
+        let defaultLog = Logger()
+        defaultLog.log("This is a default message.")
     }
 }
 

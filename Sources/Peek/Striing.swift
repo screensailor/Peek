@@ -4,7 +4,7 @@ extension String {
         "\(self) \(CodeLocation(function, file, line))"
     }
     
-    @inlinable public func error(_ function: String = #function, _ file: String = #file, _ line: Int = #line) -> Peek.Error {
-        Peek.Error(self, function, file, line)
+    @inlinable public func error(_ function: String = #function, _ file: String = #file, _ line: Int = #line) -> CodeLocation.Error {
+        CodeLocation.Error(self, function, file, line)
     }
 }
