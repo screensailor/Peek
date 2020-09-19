@@ -4,10 +4,8 @@ import os
 
 infix operator ¶ : TernaryPrecedence
 
-@discardableResult public func ¶ <L, R>(lhs: L, rhs: R) -> L
-where L: CustomStringConvertible, R: CustomStringConvertible
-{
-    peek.debug("\(lhs) \(rhs)")
+@discardableResult public func ¶ <L, R>(lhs: L, rhs: R) -> L {
+    peek.debug("\(String(describing:lhs)) \(String(describing: rhs))")
     return lhs
 }
 //self.location = here(function, file, line)
