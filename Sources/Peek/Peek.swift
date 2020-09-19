@@ -8,8 +8,6 @@ infix operator ¶ : TernaryPrecedence
     peek.debug("\(String(describing:lhs)) \(String(describing: rhs))")
     return lhs
 }
-//self.location = here(function, file, line)
-//self.description = "\(message ?? "•") \(a[keyPath: keyPath]), \(location)"
 
 extension CustomStringConvertible {
     
