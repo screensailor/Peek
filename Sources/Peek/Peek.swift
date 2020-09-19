@@ -1,37 +1,78 @@
-import Foundation
+import os
+
+public let peek = Logger(subsystem: "peek", category: "🔎")
 
 infix operator ¶ : TernaryPrecedence
 
-@discardableResult public func ¶ <L, R>(lhs: L, rhs: R) -> L {
-    #if DEBUG
-    print(rhs, lhs)
-    #endif
+@discardableResult public func ¶ <L, R>(lhs: L, rhs: R) -> L
+where L: CustomStringConvertible, R: CustomStringConvertible
+{
+    peek.debug("\(lhs) \(rhs)")
     return lhs
 }
+//self.location = here(function, file, line)
+//self.description = "\(message ?? "•") \(a[keyPath: keyPath]), \(location)"
 
-public struct Peek {
+extension CustomStringConvertible {
     
-    public let log: () -> String
-    public let location: CodeLocation
-
-    public init<A>(
-        _ a: A,
-        _ keyPath: PartialKeyPath<A>,
-        _ message: Any?,
+    @inlinable
+    @discardableResult
+    public func peek(
+        as level: OSLogType = .debug,
         _ function: String = #function,
         _ file: String = #file,
         _ line: Int = #line
-    ) {
-        self.location = here(function, file, line)
-        self.log = { [location] in
-            var o = ""
-            print(message ?? "•", a[keyPath: keyPath], location, terminator: "", to: &o)
-            return o
-        }
+    ) -> Self {
+        Peek.peek.log(level: level, "\(self) \(here(function, file, line))")
+        return self
+    }
+    
+    @inlinable
+    @discardableResult
+    public func peek<Message>(
+        _ message: @escaping @autoclosure () -> Message,
+        as level: OSLogType = .debug,
+        _ function: String = #function,
+        _ file: String = #file,
+        _ line: Int = #line
+    ) -> Self
+    where Message: CustomStringConvertible
+    {
+        Peek.peek.log(level: level, "\(message()) \(self) \(here(function, file, line))")
+        return self
+    }
+
+    @inlinable
+    @discardableResult
+    public func peek<Property>(
+        _ keyPath: KeyPath<Self, Property>,
+        as level: OSLogType = .debug,
+        _ function: String = #function,
+        _ file: String = #file,
+        _ line: Int = #line
+    ) -> Self
+    where Property: CustomStringConvertible
+    {
+        Peek.peek.log(level: level, "\(self[keyPath: keyPath]) \(here(function, file, line))")
+        return self
+    }
+
+    @inlinable
+    @discardableResult
+    public func peek<Message, Property>(
+        _ message: @escaping @autoclosure () -> Message,
+        _ keyPath: KeyPath<Self, Property>,
+        as level: OSLogType = .debug,
+        _ function: String = #function,
+        _ file: String = #file,
+        _ line: Int = #line
+    ) -> Self
+    where
+        Message: CustomStringConvertible,
+        Property: CustomStringConvertible
+    {
+        Peek.peek.log(level: level, "\(message()) \(self[keyPath: keyPath]) \(here(function, file, line))")
+        return self
     }
 }
 
-extension Peek: CustomStringConvertible, CustomDebugStringConvertible {
-    @inlinable public var description: String { log() }
-    @inlinable public var debugDescription: String { log() }
-}

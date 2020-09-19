@@ -5,20 +5,20 @@ import os
 class Peek™: Hopes {
     
     func test_peek() {
+        
         peek()
+        peek(as: .error)
+        
         5.peek("✅")
+        5.peek("✅", as: .fault)
+        
         peek(\.name)
-        peek("✅", \.name){ print("❗️log", $0.log()) }
+        peek(\.name, as: .info)
+
         2 + 3 ¶ "✅"
         2 + 3 ¶ "✅".here()
-        print( "⚠️".error() )
         2 + 3 ¶ here()
-    }
-    
-    func test() {
-        let defaultLog = Logger()
-        defaultLog.log("This is a default message.")
+        
+        print( "⚠️".error() )
     }
 }
-
-
