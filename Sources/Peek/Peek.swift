@@ -1,6 +1,6 @@
 import os
 
-public let peek = Logger(subsystem: "peek", category: "🔎")
+@usableFromInline let peek = Logger(subsystem: "peek", category: "🔎")
 
 infix operator ¶ : TernaryPrecedence
 
