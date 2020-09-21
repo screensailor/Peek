@@ -14,6 +14,22 @@ extension CustomStringConvertible {
     @inlinable
     @discardableResult
     public func peek(
+        signpost: StaticString,
+        id: OSSignpostID = .exclusive,
+        _ type: OSSignpostType,
+        dso: UnsafeRawPointer = #dsohandle,
+        log: OSLog = .default
+    ) -> Self {
+        os_signpost(type, dso: dso, log: log, name: signpost, signpostID: id)
+        return self
+    }
+}
+
+extension CustomStringConvertible {
+    
+    @inlinable
+    @discardableResult
+    public func peek(
         as level: OSLogType = .debug,
         _ function: String = #function,
         _ file: String = #file,
