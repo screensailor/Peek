@@ -9,20 +9,15 @@ infix operator ¶ : TernaryPrecedence
     return lhs
 }
 
-extension CustomStringConvertible {
-    
-    @inlinable
-    @discardableResult
-    public func peek(
-        signpost: StaticString,
-        id: OSSignpostID = .exclusive,
-        _ type: OSSignpostType,
-        dso: UnsafeRawPointer = #dsohandle,
-        log: OSLog = .default
-    ) -> Self {
-        os_signpost(type, dso: dso, log: log, name: signpost, signpostID: id)
-        return self
-    }
+@inlinable
+public func peek(
+    signpost type: OSSignpostType,
+    _ name: StaticString,
+    id: OSSignpostID = .exclusive,
+    dso: UnsafeRawPointer = #dsohandle,
+    log: OSLog = .default
+) {
+    os_signpost(type, dso: dso, log: log, name: name, signpostID: id)
 }
 
 extension CustomStringConvertible {
