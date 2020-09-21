@@ -1,6 +1,5 @@
 @testable import Peek
 import Hope
-import os
 
 class Peek™: Hopes {
     

@@ -11,8 +11,11 @@ let package = Package(
     products: [
         .library(name: "Peek", targets: ["Peek"])
     ],
+    dependencies: [
+        .package(url: "https://github.com/screensailor/Hope.git", .branch("trunk")),
+    ],
     targets: [
         .target(name: "Peek"),
-        .testTarget(name: "PeekTests", dependencies: ["Peek"]),
+        .testTarget(name: "PeekTests", dependencies: ["Peek", "Hope"]),
     ]
 )

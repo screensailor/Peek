@@ -1,4 +1,4 @@
-import os
+@_exported import os
 
 @usableFromInline let peek = Logger(subsystem: "peek", category: "🔎")
 
