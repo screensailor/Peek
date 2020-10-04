@@ -22,7 +22,7 @@ extension CodeLocation {
 extension CodeLocation: CustomDebugStringConvertible, CustomStringConvertible {
     
     public var debugDescription: String {
-        "\(function) \(file) \(line)"
+        "← \(function) \(file) \(line)"
     }
     
     public var description: String {
@@ -30,6 +30,6 @@ extension CodeLocation: CustomDebugStringConvertible, CustomStringConvertible {
         if let i = file.lastIndex(of: "/") { // TODO: remove when https://forums.swift.org/t/concise-magic-file-names/31297
             file = file.suffix(from: i).description
         }
-        return "\(function) \(file) \(line)"
+        return "← \(function) \(file) \(line)"
     }
 }
