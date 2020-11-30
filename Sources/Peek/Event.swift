@@ -18,9 +18,9 @@ public struct Context: Identifiable, Hashable, CustomStringConvertible {
     public let location: CodeLocation
     public let description: String
     
-    public init<This: State>(
+    public init<InitialState: State>(
         named name: String,
-        in state: This.Type,
+        in state: InitialState.Type,
         _ function: String = #function,
         _ file: String = #file,
         _ line: Int = #line
@@ -28,7 +28,7 @@ public struct Context: Identifiable, Hashable, CustomStringConvertible {
         self.name = name
         self.location = .init(function, file, line)
         self.description = "Context(\(name), at: \(location))"
-        Enter<This>().in(self)
+        Enter<InitialState>().in(self)
     }
 }
 
@@ -84,11 +84,11 @@ public struct Enter<This: State>: Event {
     public func `in`(_ context: Context) -> Context { // TODO: capture code location info
         let state = This.init(context: context)
         Thread.onMainThread {
-            Context.events.send((self, state, context))
             Context.queue.sync {
                 Context.state[context] = state
             }
             Context.states.send((state, context))
+            (self as Event).in(context)
         }
         return context
     }
