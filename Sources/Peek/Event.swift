@@ -32,9 +32,9 @@ public struct Context: Identifiable, Hashable, CustomStringConvertible {
 }
 
 extension Context {
-    public static let states = PassthroughSubject<(State, Context), Never>()
-    public static let events = PassthroughSubject<(Event, State, Context), Never>()
-    public static let errors = PassthroughSubject<(Event, State, Context, Error), Never>()
+    public static let states = PassthroughSubject<(state: State, context: Context), Never>()
+    public static let events = PassthroughSubject<(event: Event, state: State, context: Context), Never>()
+    public static let errors = PassthroughSubject<(event: Event, state: State, context: Context, error: Error), Never>()
 }
 
 extension Context {
