@@ -2,7 +2,6 @@ import Combine
 import Foundation
 
 public protocol Event {}
-public protocol HotPath {}
 
 public protocol State {
     var context: Context { get }
@@ -63,9 +62,7 @@ extension Event {
     public func `in`(_ context: Context) -> Context { // TODO: capture code location info
         Thread.onMainThread {
             let state = context.state
-            if !(self is HotPath) {
-                Context.events.send((self, state, context))
-            }
+            Context.events.send((self, state, context))
             do {
                 try state.on(self)
             } catch {
