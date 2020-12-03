@@ -59,7 +59,7 @@ private extension Context {
 extension Event {
     
     @discardableResult
-    public func `in`(_ context: Context) -> Context { // TODO: capture code location info
+    public func `in`(_ context: Context) -> Self { // TODO: capture code location info
         Thread.onMainThread {
             let state = context.state
             Context.events.send((self, state, context))
@@ -69,7 +69,7 @@ extension Event {
                 Context.errors.send((self, state, context, error))
             }
         }
-        return context
+        return self
     }
 }
 
@@ -78,7 +78,7 @@ public struct Enter<This: State>: Event {
     public init() {}
     
     @discardableResult
-    public func `in`(_ context: Context) -> Context { // TODO: capture code location info
+    public func `in`(_ context: Context) -> This { // TODO: capture code location info
         let state = This.init(context: context)
         Thread.onMainThread {
             Context.queue.sync {
@@ -87,7 +87,7 @@ public struct Enter<This: State>: Event {
             Context.states.send((state, context))
             (self as Event).in(context)
         }
-        return context
+        return state
     }
 }
 
