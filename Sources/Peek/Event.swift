@@ -62,9 +62,9 @@ extension Event {
     public func `in`(_ context: Context) -> Self { // TODO: capture code location info
         Thread.onMainThread {
             let state = context.state
-            Context.events.send((self, state, context))
             do {
                 try state.on(self)
+                Context.events.send((self, state, context))
             } catch {
                 Context.errors.send((self, state, context, error))
             }
