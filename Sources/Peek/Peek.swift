@@ -88,3 +88,32 @@ extension CustomStringConvertible {
     }
 }
 
+extension Error {
+    
+    @inlinable
+    @discardableResult
+    public func peek(
+        as level: OSLogType = .error,
+        function: String = #function,
+        file: String = #file,
+        line: Int = #line
+    ) -> Self {
+        logger.log(level: level, "\(String(describing: self)) \(here(function, file, line))")
+        return self
+    }
+    
+    @inlinable
+    @discardableResult
+    public func peek<Message>(
+        _ message: @escaping @autoclosure () -> Message,
+        as level: OSLogType = .error,
+        function: String = #function,
+        file: String = #file,
+        line: Int = #line
+    ) -> Self
+    where Message: CustomStringConvertible
+    {
+        logger.log(level: level, "\(message()) \(String(describing: self)) \(here(function, file, line))")
+        return self
+    }
+}
