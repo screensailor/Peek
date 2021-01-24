@@ -141,8 +141,8 @@ where
     Failure == Never
 {
     
-    public subscript<A: State>(_: A.Type) -> AnyPublisher<(state: State, context: Context), Never> {
-        filter { $0.state is A }.eraseToAnyPublisher()
+    public subscript<S: State>(_: S.Type) -> AnyPublisher<(state: S, context: Context), Never> {
+        compactMap{ o in (o.state as? S).map{ s in (s, o.context) } }.eraseToAnyPublisher()
     }
 }
 
@@ -152,12 +152,15 @@ where
     Failure == Never
 {
     
-    public subscript<E: Event>(_: E.Type) -> AnyPublisher<(event: Event, state: State, context: Context), Never> {
-        self.filter { $0.event is E }.eraseToAnyPublisher()
+    public subscript<E: Event>(_: E.Type) -> AnyPublisher<(event: E, state: State, context: Context), Never> {
+        compactMap{ o in (o.event as? E).map{ e in (e, o.state, o.context) } }.eraseToAnyPublisher()
     }
     
-    public subscript<E: Event, S: State>(_: E.Type, _: S.Type) -> AnyPublisher<(event: Event, state: State, context: Context), Never> {
-        self.filter { $0.state is S && $0.event is E }.eraseToAnyPublisher()
+    public subscript<E: Event, S: State>(_: E.Type, _: S.Type) -> AnyPublisher<(event: E, state: S, context: Context), Never> {
+        compactMap{ o in
+            guard let e = o.event as? E, let s = o.state as? S else { return nil }
+            return (e, s, o.context)
+        }.eraseToAnyPublisher()
     }
 }
 
@@ -167,11 +170,14 @@ where
     Failure == Never
 {
     
-    public subscript<E: Event>(_: E.Type) -> AnyPublisher<(event: Event, state: State, context: Context, error: Error), Never> {
-        self.filter { $0.event is E }.eraseToAnyPublisher()
+    public subscript<E: Event>(_: E.Type) -> AnyPublisher<(event: E, state: State, context: Context, error: Error), Never> {
+        compactMap{ o in (o.event as? E).map{ e in (e, o.state, o.context, o.error) } }.eraseToAnyPublisher()
     }
     
-    public subscript<E: Event, S: State>(_: E.Type, _: S.Type) -> AnyPublisher<(event: Event, state: State, context: Context, error: Error), Never> {
-        self.filter { $0.state is S && $0.event is E }.eraseToAnyPublisher()
+    public subscript<E: Event, S: State>(_: E.Type, _: S.Type) -> AnyPublisher<(event: E, state: S, context: Context, error: Error), Never> {
+        compactMap{ o in
+            guard let e = o.event as? E, let s = o.state as? S else { return nil }
+            return (e, s, o.context, o.error)
+        }.eraseToAnyPublisher()
     }
 }
