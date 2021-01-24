@@ -123,3 +123,44 @@ private extension Thread {
         isMainThread ? { $0() } : DispatchQueue.main.sync
     }
 }
+
+extension PassthroughSubject
+where
+    Output == (state: State, context: Context),
+    Failure == Never
+{
+    
+    public subscript<A: State>(_: A.Type) -> AnyPublisher<(state: State, context: Context), Never> {
+        filter { $0.state is A }.eraseToAnyPublisher()
+    }
+}
+
+extension PassthroughSubject
+where
+    Output == (event: Event, state: State, context: Context),
+    Failure == Never
+{
+    
+    public subscript<E: Event>(_: E.Type) -> AnyPublisher<(event: Event, state: State, context: Context), Never> {
+        self.filter { $0.event is E }.eraseToAnyPublisher()
+    }
+    
+    public subscript<E: Event, S: State>(_: E.Type, _: S.Type) -> AnyPublisher<(event: Event, state: State, context: Context), Never> {
+        self.filter { $0.state is S && $0.event is E }.eraseToAnyPublisher()
+    }
+}
+
+extension PassthroughSubject
+where
+    Output == (event: Event, state: State, context: Context, error: Error),
+    Failure == Never
+{
+    
+    public subscript<E: Event>(_: E.Type) -> AnyPublisher<(event: Event, state: State, context: Context, error: Error), Never> {
+        self.filter { $0.event is E }.eraseToAnyPublisher()
+    }
+    
+    public subscript<E: Event, S: State>(_: E.Type, _: S.Type) -> AnyPublisher<(event: Event, state: State, context: Context, error: Error), Never> {
+        self.filter { $0.state is S && $0.event is E }.eraseToAnyPublisher()
+    }
+}
