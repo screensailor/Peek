@@ -73,6 +73,14 @@ extension Event {
     }
 }
 
+public struct WillExit<This: State>: Event {}
+public struct DidExit<This: State>: Event {}
+
+private extension State {
+    func willExit() { WillExit<Self>().in(context) }
+    func didExit() { DidExit<Self>().in(context) }
+}
+
 public struct Enter<This: State>: Event {
     
     public init() {}
@@ -81,11 +89,14 @@ public struct Enter<This: State>: Event {
     public func `in`(_ context: Context) -> This { // TODO: capture code location info
         let state = This.init(context: context)
         Thread.onMainThread {
+            let old = Context.queue.sync { Context.state[context] }
+            old?.willExit()
             Context.queue.sync {
                 Context.state[context] = state
             }
             Context.states.send((state, context))
             (self as Event).in(context)
+            old?.didExit()
         }
         return state
     }
