@@ -1,6 +1,7 @@
-@testable import Peek
-import Hope
+@_exported import Peek
+@_exported import Hope
 
+@available(iOS 14.0, *)
 class Peek™: Hopes {
     
     func test_peek() {
