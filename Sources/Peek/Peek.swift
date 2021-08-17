@@ -2,11 +2,9 @@
 
 infix operator ¶ : TernaryPrecedence
 
-@available(iOS 14.0, *)
 @usableFromInline let logger = Logger(subsystem: "peek", category: "🔎")
 
 @discardableResult
-@available(iOS 14.0, *)
 public func ¶ <L, R>(lhs: L, rhs: R) -> L {
     logger.debug("\(String(describing:lhs)) \(String(describing: rhs))")
     return lhs
@@ -32,7 +30,6 @@ extension CustomStringConvertible {
     
     @inlinable
     @discardableResult
-    @available(iOS 14.0, *)
     public func peek(
         as level: OSLogType = .debug,
         function: String = #function,
@@ -45,7 +42,6 @@ extension CustomStringConvertible {
     
     @inlinable
     @discardableResult
-    @available(iOS 14.0, *)
     public func peek<Message>(
         _ message: @escaping @autoclosure () -> Message,
         as level: OSLogType = .debug,
@@ -61,7 +57,6 @@ extension CustomStringConvertible {
 
     @inlinable
     @discardableResult
-    @available(iOS 14.0, *)
     public func peek<Property>(
         _ keyPath: KeyPath<Self, Property>,
         as level: OSLogType = .debug,
@@ -77,7 +72,6 @@ extension CustomStringConvertible {
 
     @inlinable
     @discardableResult
-    @available(iOS 14.0, *)
     public func peek<Message, Property>(
         _ message: @escaping @autoclosure () -> Message,
         _ keyPath: KeyPath<Self, Property>,
@@ -99,7 +93,6 @@ extension Error {
     
     @inlinable
     @discardableResult
-    @available(iOS 14.0, *)
     public func peek(
         as level: OSLogType = .error,
         function: String = #function,
@@ -112,7 +105,6 @@ extension Error {
     
     @inlinable
     @discardableResult
-    @available(iOS 14.0, *)
     public func peek<Message>(
         _ message: @escaping @autoclosure () -> Message,
         as level: OSLogType = .error,

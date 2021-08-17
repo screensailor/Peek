@@ -6,7 +6,7 @@ let package = Package(
     name: "Peek",
     platforms: [
         .macOS(.v11),
-        .iOS(.v13)
+        .iOS(.v14)
     ],
     products: [
         .library(name: "Peek", targets: ["Peek"])
